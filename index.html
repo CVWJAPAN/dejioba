@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デジタル子育ておばあちゃんの知恵袋</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        #welcome-screen, #wisdom-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        #wisdom-container {
+            display: none;
+        }
+        h1 {
+            color: #4682b4;
+            font-size: 24px;
+        }
+        h2 {
+            color: #4682b4;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+        }
+        .button {
+            background-color: #4682b4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .button:hover {
+            background-color: #355e8c;
+        }
+        #chat-box {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+        }
+        .chat-message {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .grandma-message {
+            background-color: #e6e6fa;
+            text-align: left;
+        }
+        #user-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .wisdom-tip {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+        .wisdom-tip:hover {
+            background-color: #e0eaff;
+        }
+        #tip-details {
+            display: none;
+            background-color: #e6e6fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-screen">
+        <h1>デジタル子育ておばあちゃんの知恵袋へようこそ！</h1>
+        <p>おばあちゃんの経験とデジタル技術で、子育ての知恵をシェアするよ！子育ての悩みや質問を聞いて、昔ながらのコツや現代的なアイデアをお届けするね。</p>
+        <p><strong>注意:</strong> 安全のため、子育てのアドバイスを実践する前には専門家に相談してね！</p>
+        <button class="button" onclick="startWisdom()">知恵袋を開く</button>
+    </div>
+    <div id="wisdom-container">
+        <h1>デジタル子育ておばあちゃんの知恵袋</h1>
+        <h2>おばあちゃんと話そう</h2>
+        <div id="chat-box">
+            <div class="chat-message grandma-message">おばあちゃん: ねえ、子育てで困ってることはある？相談してね！</div>
+        </div>
+        <input type="text" id="user-input" placeholder="質問や悩みを入力してね..." onkeypress="if(event.key === 'Enter') sendMessage()">
+        <button onclick="sendMessage()" class="button">送信</button>
+        <h2>子育ての知恵袋</h2>
+        <div class="wisdom-tip" onclick="showTip('sleep')">赤ちゃんの寝かしつけ</div>
+        <div class="wisdom-tip" onclick="showTip('feeding')">離乳食のコツ</div>
+        <div class="wisdom-tip" onclick="showTip('play')">遊びのアイデア</div>
+        <div class="wisdom-tip" onclick="showTip('tantrum')">癇癪への対処</div>
+        <div class="wisdom-tip" onclick="showTip('safety')">家庭での安全</div>
+        <div id="tip-details"></div>
+    </div>
+
+    <script>
+        // 知恵袋画面に進む関数
+        function startWisdom() {
+            document.getElementById("welcome-screen").style.display = "none";
+            document.getElementById("wisdom-container").style.display = "block";
+        }
+
+        // メッセージ送信関数
+        function sendMessage() {
+            const input = document.getElementById("user-input");
+            const chatBox = document.getElementById("chat-box");
+            const userText = input.value.trim().toLowerCase();
+
+            if (userText === "") return;
+
+            const userMessage = document.createElement("div");
+            userMessage.className = "chat-message grandma-message";
+            userMessage.innerText = "あなた: " + input.value;
+            chatBox.appendChild(userMessage);
+
+            const grandmaMessage = document.createElement("div");
+            grandmaMessage.className = "chat-message grandma-message";
+            grandmaMessage.innerText = "おばあちゃん: " + getGrandmaResponse(userText);
+            chatBox.appendChild(grandmaMessage);
+
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // おばあちゃんの応答関数
+        function getGrandmaResponse(userText) {
+            if (userText.includes("寝る") || userText.includes("sleep")) return "寝かしつけは優しく揺すったり、子守唄を歌うのが昔の知恵だよ。今はホワイトノイズアプリも試してみてね！下の「赤ちゃんの寝かしつけ」をチェック！";
+            if (userText.includes("離乳食") || userText.includes("feeding")) return "離乳食は最初は少量から。野菜スープやおかゆから始めると良いよ！下の「離乳食のコツ」を見てね！";
+            if (userText.includes("遊ぶ") || userText.includes("play")) return "簡単な遊びならブロックや絵本がおすすめ。デジタルでは教育アプリも良いよ！「遊びのアイデア」をチェック！";
+            if (userText.includes("癇癪") || userText.includes("tantrum")) return "癇癪は落ち着くまで見守って、ハグで安心させてね。動画で深呼吸も教えてあげて！「癇癪への対処」を見てみて！";
+            if (userText.includes("安全") || userText.includes("safety")) return "家では角をカバーしたり、危ない物を隠してね。スマートホーム機器も便利だよ！「家庭での安全」を確認して！";
+            return "ふーん、どんなお悩みか教えてね！下の知恵袋から選んでみてもいいよ！";
+        }
+
+        // 知恵袋詳細表示関数
+        function showTip(tip) {
+            const details = document.getElementById("tip-details");
+            let content = "";
+
+            if (tip === "sleep") {
+                content = `
+                    <h3>赤ちゃんの寝かしつけ</h3>
+                    <p><strong>おばあちゃんの知恵:</strong> 夜は暗くして、静かに揺すったり子守唄を歌うと良いよ。昔はみんなで唄ったものだね。</p>
+                    <p><strong>デジタルTips:</strong> ホワイトノイズや睡眠トラックを流すアプリ（例: White Noise Baby）を試してみて。スマートライトで間接照明もおすすめ！</p>
+                    <p><strong>注意:</strong> 寝かしつけ中に目を離さないでね。専門家に相談も忘れずに！</p>
+                `;
+            } else if (tip === "feeding") {
+                content = `
+                    <h3>離乳食のコツ</h3>
+                    <p><strong>おばあちゃんの知恵:</strong> 最初は野菜スープやおかゆを少量から。赤ちゃんのペースに合わせてね。</p>
+                    <p><strong>デジタルTips:</strong> 離乳食レシピアプリ（例: Baby Food Recipes）でアイデアをチェック。フードプロセッサーで細かくするのも便利だよ。</p>
+                    <p><strong>注意:</strong> アレルギーに注意して、初めての食材は少量から。栄養士に相談を！</p>
+                `;
+            } else if (tip === "play") {
+                content = `
+                    <h3>遊びのアイデア</h3>
+                    <p><strong>おばあちゃんの知恵:</strong> 外で砂遊びや絵本の読み聞かせが好きだったよ。手作りのおもちゃも楽しかったね。</p>
+                    <p><strong>デジタルTips:</strong> 教育アプリ（例: ABCmouse）やタブレットで動画を見せるのも良いけど、時間制限を。Zoomで家族と遊ぶのも楽しいよ！</p>
+                    <p><strong>注意:</strong> 画面時間は1日1時間以内にね。目が疲れないように休憩を！</p>
+                `;
+            } else if (tip === "tantrum") {
+                content = `
+                    <h3>癇癪への対処</h3>
+                    <p><strong>おばあちゃんの知恵:</strong> 癇癪は我慢せず、見守ってハグで安心させてあげて。昔は膝に抱っこしてたよ。</p>
+                    <p><strong>デジタルTips:</strong> 深呼吸やリラックス動画（YouTube Kidsで探せる）を一緒に見てみる。タイマーで落ち着く時間を作るのも良いね。</p>
+                    <p><strong>注意:</strong> 危険な場所では安全第一。専門家に相談も大事だよ！</p>
+                `;
+            } else if (tip === "safety") {
+                content = `
+                    <h3>家庭での安全</h3>
+                    <p><strong>おばあちゃんの知恵:</strong> 家具の角を布で包んだり、危ない物を高い場所に。目を離さないのが一番だよ。</p>
+                    <p><strong>デジタルTips:</strong> スマートホームカメラ（例: Nest Cam）で監視したり、ドアロックアプリを使うのも便利。煙探知機も忘れずに！</p>
+                    <p><strong>注意:</strong> デジタル機器は子供の手の届かない場所に。安全対策は専門家に確認してね！</p>
+                `;
+            }
+
+            details.innerHTML = content;
+            details.style.display = "block";
+        }
+    </script>
+</body>
+</html>
